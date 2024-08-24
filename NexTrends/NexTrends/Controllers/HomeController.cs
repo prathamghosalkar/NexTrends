@@ -8,5 +8,6 @@ namespace NexTrends.Controllers
         {
             return View();
         }
+        
     }
 }
