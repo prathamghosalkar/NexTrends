@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<style>
+    .carousel-container {
+        width: 100%;
+        margin: 0 auto; /* Center the carousel */
+    }
+    .carousel-item img {
+        object-fit: cover; /* Ensure the image covers the container */
+        height: 400px; /* Adjust the height as needed */
+    }
+</style>
+
+<div class="carousel-container">
+    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <img src="https://media.istockphoto.com/id/916092484/photo/women-clothes-hanging-on-hangers-clothing-rails-fashion-design.jpg?s=1024x1024&w=is&k=20&c=m_-tKfvNIumZYwW9V_3JO6ulWMPRLhPvXX0gsbJAe58=" class="d-block w-100" alt="Women's Wear">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Women's Wear</h5>
+                    <p>Explore the latest trends in women's fashion.</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="https://media.istockphoto.com/id/887360960/photo/mens-suits-on-hangers-in-different-colors.jpg?s=612x612&w=0&k=20&c=RR19yJjRuR-CBWj9u1sQkFgtdYJ07KEkM678R0mtuZY=" class="d-block w-100" alt="Kids' Wear">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Kids' Wear</h5>
+                    <p>Bright and fun clothing for kids of all ages.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://media.istockphoto.com/id/916092484/photo/women-clothes-hanging-on-hangers-clothing-rails-fashion-design.jpg?s=1024x1024&w=is&k=20&c=m_-tKfvNIumZYwW9V_3JO6ulWMPRLhPvXX0gsbJAe58=" class="d-block w-100" alt="Men's Wear">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Men's Wear</h5>
+                    <p>Classic and modern styles for men.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
