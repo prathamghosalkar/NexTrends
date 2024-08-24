@@ -8,6 +8,20 @@ namespace NexTrends.Controllers
         {
             return View();
         }
-        
+
+        public IActionResult Men()
+        {
+            return View();
+        }
+
+        public IActionResult Women()
+        {
+            return View();
+        }
+
+        public IActionResult Kids()
+        {
+            return View();
+        }
     }
 }
