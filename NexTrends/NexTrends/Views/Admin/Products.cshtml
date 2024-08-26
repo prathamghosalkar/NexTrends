@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+@model NexTrends.Models.Category
+
+<h2>Add Product</h2>
+
+<form asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Product Name</span>
+        <input type="text" class="form-control" name="Name" placeholder="Enter Product Name" aria-describedby="basic-addon1" required>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Price</span>
+        <input type="number" class="form-control" name="Price" placeholder="Enter Price" aria-describedby="basic-addon2" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <div class="input-group">
+            <span class="input-group-text">Description</span>
+            <textarea name="Desc" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Quantity</span>
+        <input type="number" class="form-control" name="Qunatity" placeholder="Enter Quantity" aria-describedby="basic-addon1" required>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Category ID</span>
+        <input type="number" class="form-control" name="Cid" value="@Model.Id" placeholder="Category ID" readonly>
+        <span class="input-group-text">Name</span>
+        <input type="text" class="form-control" name="Cname" value="@Model.Name" placeholder="Category Name" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="Image" class="form-label">Upload Image</label>
+        <div class="input-group">
+            <input type="file" class="form-control" id="Image" name="Image" accept="image/*"/>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" name="AddPr" class="btn btn-primary" value="Add Product"/>
+    </div>
+</form>
