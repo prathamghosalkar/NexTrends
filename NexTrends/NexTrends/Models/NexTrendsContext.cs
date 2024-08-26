@@ -37,13 +37,13 @@ public partial class NexTrendsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=NEXSUS-DV94\\SQLEXPRESS;Initial Catalog=NexTrends;User Id=sa;Password=ccntspl@123;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("server=NEXSUS-DV96\\SQLEXPRESS;Initial Catalog=NexTrends;User Id=sa;Password=ccntspl@123;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ADMIN__3214EC27FDF2F804");
+            entity.HasKey(e => e.Id).HasName("PK__ADMIN__3214EC27B88DBED9");
 
             entity.ToTable("ADMIN");
 
@@ -54,7 +54,7 @@ public partial class NexTrendsContext : DbContext
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CART__3214EC27F989FAD8");
+            entity.HasKey(e => e.Id).HasName("PK__CART__3214EC27EEEA2752");
 
             entity.ToTable("CART");
 
@@ -64,12 +64,12 @@ public partial class NexTrendsContext : DbContext
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__CART__Customer_I__2E1BDC42");
+                .HasConstraintName("FK__CART__Customer_I__2D27B809");
         });
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CART_ITE__3214EC2702C1C13F");
+            entity.HasKey(e => e.Id).HasName("PK__CART_ITE__3214EC270E855E75");
 
             entity.ToTable("CART_ITEM");
 
@@ -89,7 +89,7 @@ public partial class NexTrendsContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CATEGORY__3214EC2769419568");
+            entity.HasKey(e => e.Id).HasName("PK__CATEGORY__3214EC27725709AD");
 
             entity.ToTable("CATEGORY");
 
@@ -99,11 +99,11 @@ public partial class NexTrendsContext : DbContext
 
         modelBuilder.Entity<Coupon>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__COUPONS__3214EC27805FC703");
+            entity.HasKey(e => e.Id).HasName("PK__COUPONS__3214EC275493908A");
 
             entity.ToTable("COUPONS");
 
-            entity.HasIndex(e => e.CouponCode, "UQ__COUPONS__A3478C1758200818").IsUnique();
+            entity.HasIndex(e => e.CouponCode, "UQ__COUPONS__A3478C17C18C3201").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CouponCode)
@@ -118,7 +118,7 @@ public partial class NexTrendsContext : DbContext
 
         modelBuilder.Entity<CouponUsage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__COUPON_U__3214EC27FFAAF3F0");
+            entity.HasKey(e => e.Id).HasName("PK__COUPON_U__3214EC277C5D9064");
 
             entity.ToTable("COUPON_USAGE");
 
@@ -129,16 +129,16 @@ public partial class NexTrendsContext : DbContext
 
             entity.HasOne(d => d.Coupon).WithMany(p => p.CouponUsages)
                 .HasForeignKey(d => d.CouponId)
-                .HasConstraintName("FK__COUPON_US__Coupo__403A8C7D");
+                .HasConstraintName("FK__COUPON_US__Coupo__3C69FB99");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.CouponUsages)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__COUPON_US__Custo__3F466844");
+                .HasConstraintName("FK__COUPON_US__Custo__3B75D760");
         });
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CUSTOMER__3214EC27B5E3100C");
+            entity.HasKey(e => e.Id).HasName("PK__CUSTOMER__3214EC27F1A9CE61");
 
             entity.ToTable("CUSTOMER");
 
@@ -154,7 +154,7 @@ public partial class NexTrendsContext : DbContext
 
         modelBuilder.Entity<Feedback>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__FEEDBACK__3214EC2747587351");
+            entity.HasKey(e => e.Id).HasName("PK__FEEDBACK__3214EC278293824C");
 
             entity.ToTable("FEEDBACK");
 
@@ -165,12 +165,12 @@ public partial class NexTrendsContext : DbContext
 
             entity.HasOne(d => d.CidNavigation).WithMany(p => p.Feedbacks)
                 .HasForeignKey(d => d.Cid)
-                .HasConstraintName("FK__FEEDBACK__CID__4316F928");
+                .HasConstraintName("FK__FEEDBACK__CID__3F466844");
         });
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ORDERS__3214EC2714D2E267");
+            entity.HasKey(e => e.Id).HasName("PK__ORDERS__3214EC27661F763A");
 
             entity.ToTable("ORDERS");
 
@@ -185,30 +185,29 @@ public partial class NexTrendsContext : DbContext
 
             entity.HasOne(d => d.Cart).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CartId)
-                .HasConstraintName("FK__ORDERS__Cart_ID__3B75D760");
+                .HasConstraintName("FK__ORDERS__Cart_ID__37A5467C");
 
             entity.HasOne(d => d.Coupon).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CouponId)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK__ORDERS__Coupon_I__3C69FB99");
+                .HasConstraintName("FK__ORDERS__Coupon_I__38996AB5");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PRODUCT__3214EC274D8313D2");
+            entity.HasKey(e => e.Id).HasName("PK__PRODUCT__3214EC274CA9315A");
 
             entity.ToTable("PRODUCT");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CategoryId).HasColumnName("Category_ID");
             entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.Image).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__PRODUCT__Categor__2B3F6F97");
+                .HasConstraintName("FK__PRODUCT__Categor__2A4B4B5E");
         });
 
         OnModelCreatingPartial(modelBuilder);
