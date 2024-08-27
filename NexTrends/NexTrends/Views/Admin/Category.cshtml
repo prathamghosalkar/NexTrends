@@ -43,6 +43,9 @@
                     <td>
                         <a asp-controller="Admin" asp-action="Products" asp-route-id="@item.Id">Add Product</a>
                     </td>
+                    <td>
+                        <a asp-controller="Admin" asp-action="ProductsList" asp-route-id="@item.Id">View Products</a>
+                    </td>
                 </tr>
             }
             

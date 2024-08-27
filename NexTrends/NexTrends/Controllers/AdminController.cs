@@ -5,6 +5,7 @@ namespace NexTrends.Controllers
 {
     public class AdminController : Controller
     {
+        NexTrendsContext context = new NexTrendsContext();
         public IActionResult Index()
         {
             return View();
@@ -70,5 +71,34 @@ namespace NexTrends.Controllers
             }
             return RedirectToAction("Category");
         }
+        public IActionResult ProductsList(int id)
+        {
+            IEnumerable<Product> products = context.Products.Where(p => p.CategoryId == id).ToList();
+            if (products.Any())
+            {
+                return View(products); 
+            }
+            else
+            {
+                ViewBag.Result = "There are no products in this category.";
+                return View(); 
+            }
+        }
+
+        public IActionResult GetImage(int id)
+        {
+            var product = context.Products
+                .Where(p => p.Id == id)
+                .Select(p => p.Image)
+                .FirstOrDefault();
+
+            if (product != null)
+            {
+                return File(product, "image/jpeg"); 
+            }
+
+            return NotFound();
+        }
+
     }
 }

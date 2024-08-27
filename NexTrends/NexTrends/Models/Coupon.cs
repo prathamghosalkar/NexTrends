@@ -15,6 +15,12 @@ public partial class Coupon
 
     public string? Occasion { get; set; }
 
+    public int? CategoryId { get; set; }
+
+    public int? Prize { get; set; }
+
+    public virtual Category? Category { get; set; }
+
     public virtual ICollection<CouponUsage> CouponUsages { get; set; } = new List<CouponUsage>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

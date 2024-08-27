@@ -106,6 +106,7 @@ public partial class NexTrendsContext : DbContext
             entity.HasIndex(e => e.CouponCode, "UQ__COUPONS__A3478C17C18C3201").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CategoryId).HasColumnName("Category_ID");
             entity.Property(e => e.CouponCode)
                 .HasMaxLength(100)
                 .HasColumnName("Coupon_Code");
@@ -114,6 +115,11 @@ public partial class NexTrendsContext : DbContext
                 .HasColumnName("Discount_Percentage");
             entity.Property(e => e.ExpiryDate).HasColumnName("Expiry_Date");
             entity.Property(e => e.Occasion).HasMaxLength(100);
+            entity.Property(e => e.Prize).HasColumnName("prize");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Coupons)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_YourTable_ReferencedTable");
         });
 
         modelBuilder.Entity<CouponUsage>(entity =>
