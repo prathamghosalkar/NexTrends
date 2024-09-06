@@ -21,6 +21,8 @@ public partial class Customer
 
     public string? Pincode { get; set; }
 
+    public string Role { get; set; } = null!;
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<CouponUsage> CouponUsages { get; set; } = new List<CouponUsage>();

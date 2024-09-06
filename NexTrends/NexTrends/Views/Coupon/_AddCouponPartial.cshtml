@@ -1,0 +1,73 @@
+﻿@model List<NexTrends.Models.Category>
+
+<form method="post" action="@Url.Action("AddCoupon")">
+    <div class="container mt-4">
+        <h2>Add Coupon</h2>
+        <div class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Coupon Code</span>
+                    <input type="text" id="coupancode" name="coupancode" class="form-control" placeholder="Enter Coupon Code" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Discount Percentage</span>
+                    <input type="number" id="discount" name="discount" class="form-control" placeholder="Enter Discount Percentage" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Expiry Date</span>
+                    <input type="date" id="expirydate" name="expirydate" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Occasion</span>
+                    <input type="text" id="occasion" name="occasion" class="form-control" placeholder="Enter Occasion" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Minimum Applicable Price</span>
+                    <input type="number" id="prize" name="prize" class="form-control" placeholder="Enter Prize" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="categorySelect" class="form-label">Category</label>
+                <select id="categorySelect" name="categoryId" class="form-select" onchange="updateCategoryId()">
+                    <option value="">Select Category</option>
+                    @foreach (var category in Model)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="categoryId" class="form-label">Selected Category ID</label>
+                <div class="input-group">
+                    <input type="text" id="categoryId" name="categoryIdDisplay" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="text-end">
+                <input type="submit" name="AddCou" class="btn btn-primary btn-lg" value="Add Coupon" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function updateCategoryId() {
+        var categorySelect = document.getElementById("categorySelect");
+        var categoryIdDisplay = document.getElementById("categoryId");
+        categoryIdDisplay.value = categorySelect.value;
+    }
+</script>

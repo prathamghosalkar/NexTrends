@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+@model NexTrends.Models.Product
+
+<form asp-controller="Product" asp-action="EditProduct" method="post">
+    <div>
+    <div class="input-group mb-3">
+        <span class="input-group-text">Product Name</span>
+        <input type="text" class="form-control" name="Name" value="@Model.Name" aria-describedby="basic-addon1" />
+        <span class="input-group-text">PID</span>
+        <input type="text" class="form-control" name="PID" value="@Model.Id" aria-describedby="basic-addon1" readonly required/>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Price</span>
+        <input type="number" class="form-control" name="Price" value="@Model.Price" aria-describedby="basic-addon2" required/>
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea name="Desc" class="form-control">@Model.Description</textarea>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Quantity</span>
+        <input type="number" class="form-control" name="Quantity" value="@Model.Quantity" aria-describedby="basic-addon1" required/>
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Category ID</span>
+        <input type="number" class="form-control" name="Cid" value="@Model.CategoryId" readonly required/>
+       
+    </div>
+
+    <div class="mb-3">
+        <label for="Image" class="form-label">Current Image</label>
+        <div class="input-group">
+            @if (Model.Image != null)
+            {
+                <img src="@Url.Action("GetImage", new { id = Model.Id })" alt="Current Product Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <p>No image available</p>
+            }
+        </div>
+    </div>
+
+    <div class="mb-3" id="ImageUploadSection" style="display: @Url.Action("GetImage", new { id = Model.Id })">
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" name="SaveChanges" class="btn btn-primary" value="Save Changes" />
+        
+    </div>
+    </div>
+</form>

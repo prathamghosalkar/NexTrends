@@ -11,9 +11,14 @@ public partial class Cart
 
     public string? Status { get; set; }
 
-    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+    public int ProductId { get; set; }
+
+    public int Quantity { get; set; }
+
+    public decimal Price { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;
+    public virtual Product Product { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

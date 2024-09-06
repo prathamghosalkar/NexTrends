@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Manage Coupons";
+    var coupons = ViewBag.Coupons as List<NexTrends.Models.Coupon>;
+    var categories = ViewBag.Categories as List<NexTrends.Models.Category>;
+    bool showAddCoupon = ViewBag.ShowAddCoupon;
+}
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container mt-5">
+    <h2>Manage Coupons</h2>
+    @if (TempData["DeleteMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["DeleteMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    <!-- Button Group -->
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="btnViewCoupons" type="button" class="btn btn-primary" onclick="showView('viewCoupons')">View Coupons</button>
+        <button id="btnAddCoupon" type="button" class="btn btn-secondary" onclick="showView('addCoupon')">Add Coupon</button>
+    </div>
+
+    <!-- View Coupons Section -->
+    <div id="viewCoupons" class="mt-4" style="@(showAddCoupon ? "display: none;" : "display: block;")">
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Coupon Code</th>
+                    <th>Discount Percentage</th>
+                    <th>Expiry Date</th>
+                    <th>Occasion</th>
+                    <th>Category Id</th>
+                    <th>Prize</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in coupons)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.CouponCode</td>
+                        <td>@item.DiscountPercentage</td>
+                        <td>@item.ExpiryDate.ToShortDateString()</td>
+                        <td>@item.Occasion</td>
+                        <td>@item.CategoryId</td>
+                        <td>@item.Prize</td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-danger btn-sm">Edit</a>
+                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Coupon Section -->
+    <div id="addCoupon" class="mt-4" style="@(showAddCoupon ? "display: block;" : "display: none;")">
+        @Html.Partial("_AddCouponPartial", categories)
+    </div>
+</div>
+
+<!-- JavaScript to Toggle Views with Sliding Animation -->
+<script>
+    function showView(viewId) {
+        // Hide all views with sliding up animation
+        $('#viewCoupons').slideUp();
+        $('#addCoupon').slideUp();
+
+        // Show the selected view with sliding down animation
+        $('#' + viewId).slideDown();
+
+        // Update button styles
+        $('#btnViewCoupons').removeClass('btn-primary').addClass('btn-secondary');
+        $('#btnAddCoupon').removeClass('btn-primary').addClass('btn-secondary');
+
+        if (viewId === 'viewCoupons') {
+            $('#btnViewCoupons').removeClass('btn-secondary').addClass('btn-primary');
+        } else if (viewId === 'addCoupon') {
+            $('#btnAddCoupon').removeClass('btn-secondary').addClass('btn-primary');
+        }
+    }
+
+    // Initialize with View Coupons visible
+    $(document).ready(function () {
+        showView('viewCoupons');
+    });
+</script>

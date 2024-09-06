@@ -6,59 +6,60 @@
     Layout = "_LayoutAdmin";
 }
 @model List<Category>
-@section scripts{
-    <script>
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <text>
-                alert('@TempData["SuccessMessage"]');
-            </text>
-        }
-    </script>
-}
 
+@* ------------------------------------------------------------------- *@
 <div class="container mt-5">
     <h2>Manage Categories</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["DeleteMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["DeleteMessage"]
+        </div>
+    }
 
-    <!-- Button Group -->
     <div class="btn-group" role="group" aria-label="Basic example">
         <button id="btnViewCategories" type="button" class="btn btn-primary" onclick="showView('viewCategories')">View Categories</button>
         <button id="btnAddCategory" type="button" class="btn btn-secondary" onclick="showView('addCategory')">Add Category</button>
     </div>
 
-    <!-- View Categories Section -->
+ 
     <div id="viewCategories" class="mt-4">
-        <!-- Placeholder for category table -->
+       
         <table class="table">
             <tr class="table-dark">
-               <td>Id</td>
+              
                 <td  colspan="2">Category Name<td>
                 
             </tr>
             @foreach(var item in Model)
             {
                 <tr>
-                    <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>
-                        <a asp-controller="Admin" asp-action="Products" asp-route-id="@item.Id">Add Product</a>
+                        <a asp-controller="Product" asp-action="Products" asp-route-id="@item.Id">Add Product</a>
                     </td>
                     <td>
-                        <a asp-controller="Admin" asp-action="ProductsList" asp-route-id="@item.Id">View Products</a>
+                        <a asp-controller="Product" asp-action="ProductsList" asp-route-id="@item.Id">View Products</a>
                     </td>
                 </tr>
             }
             
         </table>
     </div>
-
-    <!-- Add Category Section (Initially Hidden) -->
+    @* ------------------------------------------------- *@
+    
     <div id="addCategory" class="mt-4" style="display: none;">
-        <!-- Placeholder for add category form -->
-        <form method="post" action="/Admin/AddCategory">
+        
+        <form method="post" action="/Category/AddCategory">
             <div class="input-group mb-3">
                       <span class="input-group-text" id="basic-addon1">Category Name</span>
-                      <input type="text" name="CName" class="form-control" placeholder="Enter Name" aria-describedby="basic-addon1">
+                      <input type="text" name="CName" class="form-control" placeholder="Enter Name" aria-describedby="basic-addon1" required>
             </div>
 
             <div>
@@ -68,17 +69,17 @@
     </div>
 </div>
 
-<!-- JavaScript to Toggle Views with Sliding Animation -->
+
 <script>
     function showView(viewId) {
-        // Hide all views with sliding up animation
+      
         $('#viewCategories').slideUp();
         $('#addCategory').slideUp();
 
-        // Show the selected view with sliding down animation
+       
         $('#' + viewId).slideDown();
 
-        // Update button styles
+        
         $('#btnViewCategories').removeClass('btn-primary').addClass('btn-secondary');
         $('#btnAddCategory').removeClass('btn-primary').addClass('btn-secondary');
 
@@ -89,7 +90,7 @@
         }
     }
 
-    // Initialize with View Categories visible
+    
     $(document).ready(function() {
         showView('viewCategories');
     });

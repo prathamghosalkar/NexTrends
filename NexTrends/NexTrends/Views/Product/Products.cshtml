@@ -5,8 +5,8 @@
 
 <h2>Add Product</h2>
 
-<form asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data">
-    
+<form asp-controller="Product" asp-action="AddProduct" method="post" enctype="multipart/form-data">
+
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Product Name</span>
         <input type="text" class="form-control" name="Name" placeholder="Enter Product Name" aria-describedby="basic-addon1" required>
@@ -21,7 +21,7 @@
         <label for="Description" class="form-label">Description</label>
         <div class="input-group">
             <span class="input-group-text">Description</span>
-            <textarea name="Desc" class="form-control"></textarea>
+            <textarea name="Desc" class="form-control" required></textarea>
         </div>
     </div>
 
@@ -40,11 +40,11 @@
     <div class="mb-3">
         <label for="Image" class="form-label">Upload Image</label>
         <div class="input-group">
-            <input type="file" class="form-control" id="Image" name="Image" accept="image/*"/>
+            <input type="file" class="form-control" id="Image" name="Image" accept="image/*" required/>
         </div>
     </div>
 
     <div class="mb-3">
-        <input type="submit" name="AddPr" class="btn btn-primary" value="Add Product"/>
+        <input type="submit" name="AddPr" class="btn btn-primary" value="Add Product" />
     </div>
 </form>

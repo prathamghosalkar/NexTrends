@@ -1,0 +1,74 @@
+﻿@model IEnumerable<NexTrends.Models.Order>
+@{
+    Layout = "_LayoutAdmin";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Order Management</h1>
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["Message"]
+            </div>
+        }
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Cart ID</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Mode of Payment</th>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Customer Email</th>
+                        <th>Customer Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.CartId</td>
+                            <td>@order.Status</td>
+                            <td>@order.Amount.ToString("")</td>
+                            <td>@order.ModeOfPayment</td>
+                            <td>@order.Cart.Customer.Name</td>
+                            <td>@order.Cart.Customer.Phone</td>
+                            <td>@order.Cart.Customer.Email</td>
+                            <td>@order.Cart.Customer.Address</td>
+                            <td>
+                                @if (order.Status == "Pending")
+                                {
+                                    <form method="post" action="/Orders/Deliver" class="d-inline">
+                                        <input type="hidden" name="id" value="@order.Id" />
+                                        <button type="submit" class="btn btn-success btn-sm">Mark as Delivered</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

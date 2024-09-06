@@ -5,45 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - NexTrends</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/NexTrends.styles.css" asp-append-version="true" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="~/assets/css/owl.css">
+    <link rel="stylesheet" href="~/css/site.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- In _Layout.cshtml or in the <head> of your page -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">NexTrends Admin Side</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                   @*  <ul class="navbar-nav me-auto">
-                        <li><a class="dropdown-item" href="/Home/Men">Men</a></li>
-                        <li><a class="dropdown-item" href="/Home/Women">Women</a></li>
-                        <li><a class="dropdown-item" href="/Home/Kids">Kids</a></li>
-                    </ul> *@
 
-                    <form class="d-flex mx-auto" asp-controller="Products" asp-action="Search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Account
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <header class="navbar">
+        <nav class="navbar navbar-expand-lg" style="margin-left:auto; margin-right:auto">
+            <div class="container">
+                <!-- Brand -->
+                <a class="navbar-brand" asp-controller="Admin" asp-action="Index">
+                    <h2>NexTrends <em>Clothing</em></h2>
+                </a>
+
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                                Home
+                                <span class="sr-only">(current)</span>
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Profile</a></li>
-                               @*  <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Orders</a></li>
-                                <li><hr class="dropdown-divider"></li> *@
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Logout</a></li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Orders" asp-action="DisplayOrder">Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Category" asp-action="Category">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Coupon" asp-action="DisplayCoupon">Coupon</a>
+                        </li>
+                        <li class="nav-item dropdown ms-3">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button">
+                                <i class="bi bi-person-circle"></i> <!-- Profile Icon -->
+                                <span class="d-none d-md-inline ms-2">Account</span> <!-- "Account" Label -->
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                               
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
                             </ul>
                         </li>
-                       @*  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i> Cart
-                            </a>
-                        </li> *@
+                        
                     </ul>
                 </div>
             </div>
@@ -59,9 +86,30 @@
             &copy; 2024 - NexTrends - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="~/assets/js/custom.js"></script>
+    <script src="~/assets/js/owl.js"></script>
+    <script src="~/assets/js/slick.js"></script>
+    <script src="~/assets/js/isotope.js"></script>
+    <script src="~/assets/js/accordions.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        document.querySelector('.dropdown-toggle').addEventListener('click', function () {
+            const dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('show');
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

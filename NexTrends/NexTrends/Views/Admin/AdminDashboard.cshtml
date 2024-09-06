@@ -1,0 +1,150 @@
+﻿
+@{
+    Layout = "_LayoutAdmin";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            background-color: #ffffff;
+            height: 100%;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+            }
+
+        .card-img-top {
+            max-height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            text-align: center;
+            color: #333;
+        }
+
+        .card-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem; 
+        }
+
+        .card-text {
+            font-size: 1rem; 
+        }
+
+        .btn-custom {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #0056b3;
+                transform: scale(1.02);
+            }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card-item {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+  
+   
+    <div class="container">
+       
+        <div class="card-container">
+            
+            <div class="card-item">
+                <a asp-controller="Orders" asp-action="DisplayOrder" class="card">
+                    <img src="~/assets/images/top_oms_cover_blogarticle_v1_bb4f4725a1.png" class="card-img-top" alt="Order Management">
+                    <div class="card-body">
+     
+                        <h2 class="card-title">Order Management</h2>
+                    </div>
+                </a>
+            </div>
+            <div class="card-item">
+                <a asp-controller="Category" asp-action="Category" class="card">
+                    <img src="~/assets/images/product_management.png" class="card-img-top" alt="Category Management">
+                    <div class="card-body">
+                     
+                        <h2 class="card-title">Category & Product Management</h2>
+                    </div>
+                </a>
+            </div>
+            <div class="card-item">
+                <a asp-controller="Coupon" asp-action="DisplayCoupon" class="card">
+                    <img src="~/assets/images/download.png" class="card-img-top" alt="Coupon Management">
+                    <div class="card-body">
+        
+                        <h2 class="card-title">Coupon Management</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+  
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

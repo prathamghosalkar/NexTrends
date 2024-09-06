@@ -1,0 +1,77 @@
+﻿@model NexTrends.Models.Product
+
+@{
+    Layout = "_Layout";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .img-fluid {
+        width: 300px;
+        height: 350px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 45%;
+    }
+</style>
+
+<div class="container mt-5">
+    <div id="notification" class="alert" style="display: none;"></div>
+    <h2>@Model.Name</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Url.Action("GetImage", new { id = Model.Id })" class="img-fluid" alt="Product Image">
+        </div>
+        <div class="col-md-6">
+            <h4>Description</h4>
+            <p>@Model.Description</p>
+            <p><strong>Price:</strong> Rs @Model.Price</p>
+            <p><strong>Quantity:</strong> @Model.Quantity</p>
+            <form asp-controller="Cart" asp-action="AddProductToCart" method="post" class="add-to-cart-form">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart-form').on('submit', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: formData,
+                success: function (response) {
+                    var notification = $('#notification');
+                    if (response.redirectTo) {
+                        // Redirect to login page if provided
+                        window.location.href = response.redirectTo;
+                    } else {
+                        // Display success or error message
+                        if (response.success) {
+                            notification.removeClass('alert-danger').addClass('alert-success');
+                            notification.text(response.message);
+                        } else {
+                            notification.removeClass('alert-success').addClass('alert-danger');
+                            notification.text(response.message);
+                        }
+                        notification.slideDown().delay(3000).slideUp();
+                    }
+                },
+                error: function () {
+                    var notification = $('#notification');
+                    notification.removeClass('alert-success').addClass('alert-danger');
+                    notification.text('An error occurred while adding the product to the cart.');
+                    notification.slideDown().delay(3000).slideUp();
+                }
+            });
+        });
+    });
+</script>

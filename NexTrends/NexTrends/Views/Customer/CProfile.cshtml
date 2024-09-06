@@ -1,0 +1,175 @@
+﻿@model NexTrends.Models.CustomerProfileViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <!-- Profile Section -->
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <!-- Centering the profile image -->
+                        <div class="profile-image-container">
+                            <img src="https://img.freepik.com/premium-vector/user-member-man-3d-icon-shape-graphic-customer-profile-person-cartoon-render-illustration_101884-2701.jpg" alt="User" class="rounded-circle" width="150">
+                        </div>
+                        <div class="mt-3">
+                            <h4>@Model.Customer.Name</h4>
+                            <p class="text-secondary">@Model.Customer.Email</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Profile Details and Dropdown Sections -->
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <!-- Profile Details -->
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Customer.Email
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Customer.Phone
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Customer.Address
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Pincode</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @Model.Customer.Pincode
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dropdown Sections -->
+                <div class="accordion" id="accordionExample">
+                    <!-- Orders Section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOrders">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrders" aria-expanded="false" aria-controls="collapseOrders">
+                                Orders
+                            </button>
+                        </h2>
+                        <div id="collapseOrders" class="accordion-collapse collapse" aria-labelledby="headingOrders" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                @if (Model.Orders.Any())
+                                {
+                                    @foreach (var order in Model.Orders)
+                                    {
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Order ID: @order.Id</h5>
+                                                <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
+                                                <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No orders found.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coupons Section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingCoupons">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCoupons" aria-expanded="false" aria-controls="collapseCoupons">
+                                Coupons
+                            </button>
+                        </h2>
+                        <div id="collapseCoupons" class="accordion-collapse collapse" aria-labelledby="headingCoupons" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                @if (Model.Coupons.Any())
+                                {
+                                    @foreach (var coupon in Model.Coupons)
+                                    {
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Coupon Code: @coupon.CouponCode</h5>
+                                                <p class="card-text"><strong>Discount:</strong> @coupon.DiscountPercentage%</p>
+                                                <p class="card-text"><strong>Expiry Date:</strong> @coupon.ExpiryDate</p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No unused coupons found.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order History Section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOrderHistory">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrderHistory" aria-expanded="false" aria-controls="collapseOrderHistory">
+                                Order History
+                            </button>
+                        </h2>
+                        <div id="collapseOrderHistory" class="accordion-collapse collapse" aria-labelledby="headingOrderHistory" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                @if (Model.PastOrders.Any())
+                                {
+                                    @foreach (var order in Model.PastOrders)
+                                    {
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Order ID: @order.Id</h5>
+                                                <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
+                                                <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No past orders found.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap 5 JS bundle (does not include Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+<!-- Custom CSS for better alignment -->
+<style>
+    .profile-image-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+</style>

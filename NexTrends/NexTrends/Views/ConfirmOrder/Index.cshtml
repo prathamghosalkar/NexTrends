@@ -1,0 +1,176 @@
+﻿@model NexTrends.Models.ConfirmOrderViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary and Confirmation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .payment-option {
+            cursor: pointer;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+            .payment-option.selected {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+            .payment-option i {
+                font-size: 2rem;
+                margin-bottom: 5px;
+            }
+
+        .confirm-section {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container rounded bg-white mt-5 mb-5">
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+        <h2>Order Summary</h2>
+
+        <div class="row">
+            <!-- Order Details Card -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Order Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Total Price</h5>
+                                <p class="card-text">@Model.TotalPrice</p>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Discount</h5>
+                                <p class="card-text">@Model.Discount</p>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Final Price</h5>
+                                <p class="card-text">@Model.FinalPrice</p>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Number of Products</h5>
+                                <p class="card-text">@Model.NumberOfProducts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Information Card -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Shipping Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Customer Name</h5>
+                                <p class="card-text">@Model.UserName</p>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Address</h5>
+                                <p class="card-text">@Model.Address</p>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <h5 class="card-title">Email</h5>
+                                <p class="card-text">@Model.Email</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods Section -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Payment Methods</h5>
+                    </div>
+                    <div class="card-body payment-methods">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="payment-option" data-method="Credit Card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <p>Credit Card</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="payment-option" data-method="UPI">
+                                    <i class="fab fa-paypal"></i>
+                                    <p>UPI</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="payment-option" data-method="Cash on Delivery">
+                                    <i class="fas fa-university"></i>
+                                    <p>Cash on Delivery</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Buttons -->
+        <form method="post" action="@Url.Action("ConfirmOrder", "ConfirmOrder")">
+            <div class="text-center confirm-section mb-4">
+                <button type="submit" id="confirm-order" class="btn btn-primary btn-lg">Confirm Order</button>
+                <button type="button" id="cancel-order" class="btn btn-secondary btn-lg" onclick="window.location.href='@Url.Action("ShowCart", "Cart")'">Cancel</button>
+            </div>
+
+            <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" />
+        </form>
+    </div>
+
+    <!-- Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.payment-option').click(function () {
+                $('.payment-option').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            $('#confirm-order').click(function () {
+                var selectedPaymentMethod = $('.payment-option.selected').data('method');
+                if (!selectedPaymentMethod) {
+                    alert('Please select a payment method before confirming the order.');
+                    return false;
+                }
+
+                $('#selectedPaymentMethod').val(selectedPaymentMethod);
+                return true; // Allow form submission
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿@model NexTrends.Models.CartViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .cart-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+    .quantity-input {
+        width: 40px;
+        text-align: center;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn-quantity {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        color: #495057;
+    }
+
+    .remove-item {
+        color: #6c757d;
+        font-size: 1.2rem;
+        text-decoration: none;
+    }
+
+        .remove-item:hover {
+            color: #dc3545;
+        }
+
+    .back-to-shop {
+        color: #495057;
+        text-decoration: none;
+    }
+
+        .back-to-shop:hover {
+            text-decoration: underline;
+        }
+
+    .summary-container {
+        background-color: #f0f0f0;
+        border-radius: 0 10px 10px 0;
+    }
+
+    .btn-quantity {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+
+    .cart-item img {
+        width: 100%;
+        height: auto;
+    }
+
+    .ticket-container {
+        margin-top: .5rem;
+    }
+
+    .ticket {
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+        padding: 1rem;
+        margin-bottom: .5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+        .ticket::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: #007bff;
+            border-top-left-radius: .25rem;
+            border-top-right-radius: .25rem;
+        }
+
+    .ticket-title {
+        font-size: 1.25rem;
+        margin-bottom: .5rem;
+    }
+
+    .ticket-details {
+        font-size: 1rem;
+        margin-bottom: .25rem;
+    }
+</style>
+<div class="container mt-5">
+    <div class="row cart-container">
+        <!-- Shopping Cart -->
+        <div class="col-md-8 p-4">
+            <h4 class="mb-4">Shopping Cart</h4>
+            <div class="text-end text-muted mb-4">@Model.CartItems.Count items</div>
+
+            @if (Model.CartItems.Count > 0)
+            {
+                @foreach (var item in Model.CartItems)
+                {
+                    <div class="row cart-item py-3 align-items-center">
+                        <div class="col-2">
+                            <img src="@Url.Action("GetImage","Product", new { id = item.ProductId })" alt="@item.Product.Name" />
+                        </div>
+                        <div class="col-4">
+                            <div>@item.Product.Name</div>
+                        </div>
+                        <div class="col-3">
+                            <form asp-action="UpdateQuantity" method="post" style="display: inline;">
+                                <input type="hidden" name="cartId" value="@item.Id" />
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-quantity btn-sm" name="newQuantity" value="@Math.Max(item.Quantity - 1, 1)">-</button>
+                                    <input type="text" class="form-control form-control-sm quantity-input mx-2" value="@item.Quantity" readonly />
+                                    <button type="submit" class="btn btn-quantity btn-sm" name="newQuantity" value="@Math.Min(item.Quantity + 1, 5)">+</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-2 text-end">₹ @item.Product.Price.ToString("F2")</div>
+                        <div class="col-1 text-end">
+                            <form asp-action="RemoveFromCart" method="post" style="display: inline;">
+                                <input type="hidden" name="cartId" value="@item.Id" />
+                                <button type="submit" class="remove-item">&times;</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Your cart is empty.</p>
+            }
+
+            <div class="mt-4">
+                <a href="#" class="back-to-shop">&larr; Back to shop</a>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="col-md-4 summary-container p-4">
+            <h5 class="mb-4">Summary</h5>
+            <div class="d-flex justify-content-between mb-3">
+                <span>ITEMS @Model.CartItems.Count</span>
+                <span>₹ @Model.CartItems.Sum(i => i.Product.Price * i.Quantity).ToString("F2")</span>
+            </div>
+            <div class="mb-3">
+                <label for="shipping" class="form-label">SHIPPING CHARGES</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                <span>₹5</span>
+               
+            </div>
+
+            <!-- Display discount if applied -->
+            @if (Model.DiscountAmount > 0)
+            {
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Discount</span>
+                    <span>- ₹ @Model.DiscountAmount.ToString("F2")</span>
+                </div>
+            }
+
+            <!-- Coupons Section -->
+            <div class="mb-3">
+                <label for="coupons-toggle" class="form-label d-flex justify-content-between align-items-center">
+                    <span>Available Coupons</span>
+                    <button id="coupons-toggle" class="btn btn-link">Show</button>
+                </label>
+                <div id="coupons-list" class="collapse">
+                    @if (Model.AvailableCoupons.Count > 0)
+                    {
+                        @foreach (var coupon in Model.AvailableCoupons)
+                        {
+                            <div class="ticket-container">
+                                <div class="ticket">
+                                    <h6 class="ticket-title">@coupon.CouponCode</h6>
+                                    <p class="ticket-details">Discount: @coupon.DiscountPercentage%</p>
+                                    <p class="ticket-details">Valid until: @coupon.ExpiryDate.ToString("dd/MM/yyyy")</p>
+                                    @if (Model.AppliedCouponId == coupon.Id)
+                                    {
+                                        <button class="btn btn-sm btn-success" disabled>Applied</button>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="ApplyCoupon" method="post">
+                                            <input type="hidden" name="couponId" value="@coupon.Id" />
+                                            <button type="submit" class="btn btn-sm btn-primary">Apply</button>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center">No available coupons.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                <span>TOTAL PRICE</span>
+                <span>₹ @(Model.CartItems.Sum(i => i.Product.Price * i.Quantity) + 5 - Model.DiscountAmount)</span>
+            </div>
+            <form asp-controller="Cart" asp-action="Checkout" method="post">
+                <button class="btn btn-dark w-100 mt-3">CHECKOUT</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('coupons-toggle').addEventListener('click', function () {
+        var couponsList = document.getElementById('coupons-list');
+        var bsCollapse = new bootstrap.Collapse(couponsList, {
+            toggle: true
+        });
+    });
+</script>

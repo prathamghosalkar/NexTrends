@@ -1,0 +1,19 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using NexTrends.Models;
+
+namespace NexTrends.Controllers
+{
+    public class CustomerController : Controller
+    {
+        NexTrendsContext context=new NexTrendsContext();
+        public IActionResult CProfile()
+        {
+            string email = "yashmote002@gmail.com";
+            var User=context.Customers.FirstOrDefault(s=>s.Email==email);
+            if (User != null) { 
+               return View (User);
+            }
+            return View();
+        }
+    }
+}

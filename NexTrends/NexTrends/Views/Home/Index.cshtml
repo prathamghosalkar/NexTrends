@@ -1,55 +1,304 @@
 ﻿@{
-    Layout = "_Layout";
+
 }
 
-<style>
-    .carousel-container {
-        width: 100%;
-        margin: 0 auto; /* Center the carousel */
-    }
-    .carousel-item img {
-        object-fit: cover; /* Ensure the image covers the container */
-        height: 400px; /* Adjust the height as needed */
-    }
-</style>
+@model List<Category>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-<div class="carousel-container">
-    <div id="carouselExampleDark" class="carousel carousel-dark slide">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+   
+
+    <title>Nextrends Clothing</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="~/assets/css/owl.css">
+   
+   
+<link href="~/css/site.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="https://media.istockphoto.com/id/916092484/photo/women-clothes-hanging-on-hangers-clothing-rails-fashion-design.jpg?s=1024x1024&w=is&k=20&c=m_-tKfvNIumZYwW9V_3JO6ulWMPRLhPvXX0gsbJAe58=" class="d-block w-100" alt="Women's Wear">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Women's Wear</h5>
-                    <p>Explore the latest trends in women's fashion.</p>
-                </div>
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="https://media.istockphoto.com/id/887360960/photo/mens-suits-on-hangers-in-different-colors.jpg?s=612x612&w=0&k=20&c=RR19yJjRuR-CBWj9u1sQkFgtdYJ07KEkM678R0mtuZY=" class="d-block w-100" alt="Kids' Wear">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Kids' Wear</h5>
-                    <p>Bright and fun clothing for kids of all ages.</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="https://media.istockphoto.com/id/916092484/photo/women-clothes-hanging-on-hangers-clothing-rails-fashion-design.jpg?s=1024x1024&w=is&k=20&c=m_-tKfvNIumZYwW9V_3JO6ulWMPRLhPvXX0gsbJAe58=" class="d-block w-100" alt="Men's Wear">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Men's Wear</h5>
-                    <p>Classic and modern styles for men.</p>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
-</div>
+    <!-- ***** Preloader End ***** -->
+    <!-- Header -->
+   <header>
+    <nav class="navbar navbar-expand-lg" style="margin-left:auto; margin-right:auto">
+        <div class="container">
+            <!-- Brand -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <h2>NexTrends <em>Clothing</em></h2>
+            </a>
+                <form asp-controller="CSearch" asp-action="SearchResult" class="d-flex position-relative" role="search">
+                    <input class="form-control pe-5 ps-5" type="text" name="SearchPr" placeholder="Search" aria-label="Search" style="-webkit-border-bottom-right-radius:0px;-webkit-border-top-right-radius:0px">
+                    <button class="btn" type="submit" style="
+            border: 2px solid #ff5f00; /* Saffron border color */
+            color:  #ff5f00; /* Saffron text color */
+            background-color: transparent; /* Transparent background */
+            transition: all 0.3s ease; /* Smooth transition */
+        " onmouseover="this.style.backgroundColor='#f4c542'; this.style.color='white'; this.style.borderColor='#f4c542'; this.querySelector('i').style.border='2px solid white';-webkit-border-bottom-left-radius:0px;-webkit-border-top-left-radius:0px;" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#f4c542'; this.style.borderColor='#f4c542'; this.querySelector('i').style.border='none';">
+                        <i class="fas fa-search" style="border: none;"></i>
+                    </button>
+                </form>
+
+                <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("ProductsList", "UserProduct", new { id = 1 })">
+                            Men
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("ProductsList", "UserProduct", new { id = 2 })">
+                                Women
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("ProductsList", "UserProduct", new { id = 3 })">
+                                Kids
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button">
+                            <i class="bi bi-person-circle"></i> <!-- Profile Icon -->
+                            <span class="d-none d-md-inline ms-2">Account</span> <!-- "Account" Label -->
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="CProfile">Profile</a></li>
+                           
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" asp-controller="Cart" asp-action="ShowCart">
+                            <i class="bi bi-cart"></i> <!-- Cart Icon -->
+                            <span class="d-none d-md-inline ms-2">Cart</span> <!-- "Cart" Label -->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="banner header-text">
+        <div class="owl-banner owl-carousel">
+            <div class="banner-item-01">
+                <div class="text-content">
+                    <h4>Best Offer</h4>
+                    <h2>New Arrivals On Sale</h2>
+                </div>
+            </div>
+            <div class="banner-item-02">
+                <div class="text-content">
+                    <h4>Flash Deals</h4>
+                    <h2>Get your best products</h2>
+                </div>
+            </div>
+            <div class="banner-item-03">
+                <div class="text-content">
+                    <h4>Last Minute</h4>
+                    <h2>Grab last minute deals</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner Ends Here -->
+
+
+
+    <!-- Products category -->
+   
+    <div class="latest-products py-5">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="section-heading text-center">
+                        <h2>Categories</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="row">
+                @foreach (var category in Model)
+                {
+                    string imageUrl;
+
+                    // Define static image paths based on category names or IDs
+                    switch (category.Name.ToLower())
+                    {
+                        case "men's wear":
+                            imageUrl = Url.Content("~/assets/images/Men.jpg");
+                            break;
+                        case "women's wear":
+                            imageUrl = Url.Content("~/assets/images/Women.jpg");
+                            break;
+                        case "kids' wear":
+                            imageUrl = Url.Content("~/assets/images/Kids.jpg");
+                            break;
+                        case "accessories":
+                            imageUrl = Url.Content("~/assets/images/Accessories.jpg");
+                            break;
+                        case "footwear":
+                            imageUrl = Url.Content("~/assets/images/Footwear.jpg");
+                            break;
+                        default:
+                            imageUrl = Url.Content("~/assets/images/Default.jpg");
+                            break;
+                    }
+
+                    <div class="col-md-4 mb-4">
+                        <a href="@Url.Action("ProductsList", "UserProduct", new { id = category.Id })" class="text-decoration-none">
+                            <div class="card card-custom">
+                                <!-- Display category image -->
+                                <img src="@imageUrl" class="card-img-top" alt="Category Image">
+                                <div class="card-body">
+                                    <h5 class="card-title">@category.Name</h5>
+                                    <p class="card-text">Explore our wide range of @category.Name products.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <div class="best-features">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        <h2>About NexTrends Clothing</h2>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="left-content">
+                        <h4>Discover the Essence of Style with NexTrends</h4>
+                        <p>At NexTrends Clothing, we believe fashion is more than just a look—it's a lifestyle. Our mission is to bring you the latest trends in fashion, combining quality, comfort, and affordability. Whether you're looking for something bold and unique or classic and timeless, we have the perfect pieces to elevate your wardrobe.</p>
+                        <p>Founded with a passion for innovation and style, NexTrends Clothing has quickly become a go-to destination for fashion-forward individuals. We are dedicated to sourcing the finest materials and designing pieces that not only look great but also feel great. Our collection includes everything from elegant evening wear to casual everyday essentials, ensuring you always look your best no matter the occasion.</p>
+                        <ul class="featured-list">
+                            <li><a href="#">High-quality materials sourced ethically</a></li>
+                            <li><a href="#">A diverse range of styles for every taste</a></li>
+                            <li><a href="#">Affordable prices without compromising quality</a></li>
+                            <li><a href="#">Commitment to sustainable fashion</a></li>
+                            <li><a href="#">Excellent customer service and support</a></li>
+                        </ul>
+                        <a href="#" class="filled-button">Learn More About Us</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="right-image">
+                        <img src="assets/images/feature-image.jpg" alt="NexTrends Clothing - About Us">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="call-to-action">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="inner-content">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4>Elevate Your Style with <em>NexTrends</em> Exclusive Collections</h4>
+                                <p>Explore our creative and unique clothing lines designed to make a statement. Whether you're dressing up for a special occasion or adding a touch of elegance to your everyday look, NexTrends Clothing has something special for you.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#" class="filled-button">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="inner-content">
+                        <p>
+                            Copyright &copy; 2024 Nextrends Clothing Co., Ltd.
+                            - Design: <a rel="nofollow noopener" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="~/assets/js/custom.js"></script>
+    <script src="~/assets/js/owl.js"></script>
+    <script src="~/assets/js/slick.js"></script>
+    <script src="~/assets/js/isotope.js"></script>
+    <script src="~/assets/js/accordions.js"></script>
+
+    <script>
+        document.querySelector('.dropdown-toggle').addEventListener('click', function () {
+            const dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('show');
+        });
+    </script>
+
+    <script language="text/Javascript">
+        cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+        function clearField(t) {                   //if the field is cleared, the cleared flag is set
+            if (!cleared[t.id]) {
+                cleared[t.id] = 1;               //set cleared flag
+                t.value = '';
+                t.style.color = '#000';
+            }
+        }
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

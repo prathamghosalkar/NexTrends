@@ -1,0 +1,107 @@
+﻿@model NexTrends.Models.Customer
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="mt-0">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg" style="padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Register</h2>
+
+                        <form asp-controller="Account" asp-action="Register" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3">
+                            </div>
+
+                            <!-- Input fields structured properly for side-by-side layout -->
+                            <div class="row mb-3">
+                                @if (TempData["MSG"] != null)
+                                {
+                                    <div class="alert alert-info">
+                                        @TempData["MSG"]
+                                    </div>
+                                }
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="form-label"></label>
+                                        <input asp-for="Name" class="form-control" name="Name" placeholder="Enter your name" required />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="form-label"></label>
+                                        <input asp-for="Email" type="email" class="form-control" name="Email" placeholder="Enter your email" required />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Phone" class="form-label"></label>
+                                        <input asp-for="Phone" class="form-control" type="text" name="Phone" placeholder="Enter your phone number" required />
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Address" class="form-label"></label>
+                                        <input asp-for="Address" class="form-control" name="Address" placeholder="Enter your address" required />
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Gender" class="form-label"></label>
+                                        <input asp-for="Gender" class="form-control" name="Gender" placeholder="Enter your gender" required />
+                                        <span asp-validation-for="Gender" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Pincode" class="form-label"></label>
+                                        <input asp-for="Pincode" type="number" class="form-control" name="Pincode" placeholder="Enter your pincode" required />
+                                        <span asp-validation-for="Pincode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Password" class="form-label"></label>
+                                        <input asp-for="Password" type="password" class="form-control" name="Pass" placeholder="Enter your password" required />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <input type="submit" name="submit" value="Create" class="btn btn-warning btn-block" style="background-color: orange; border-color: orange;" />
+                            </div>
+                        </form>
+
+                        <div class="mt-3 text-center">
+                            <a asp-controller="Account" asp-action="Login">Already have an account? Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
