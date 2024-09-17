@@ -64,6 +64,7 @@ namespace NexTrends.Controllers
         [HttpPost]
         public IActionResult AddReview(Review review)
         {
+
             // Check if user is logged in
             if (!HttpContext.Session.TryGetValue("UserId", out _))
             {
