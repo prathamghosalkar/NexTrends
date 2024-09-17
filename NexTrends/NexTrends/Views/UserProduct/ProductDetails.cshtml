@@ -3,7 +3,9 @@
 @{
     Layout = "_Layout";
 }
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <style>
     .img-fluid {
         width: 300px;
@@ -14,6 +16,42 @@
         flex: 0 0 auto;
         width: 45%;
     }
+
+    .star-rating {
+        display: flex;
+        font-size: 2rem; /* Adjust size as needed */
+        cursor: pointer;
+        direction: ltr; /* Ensure text direction is left to right */
+    }
+
+        .star-rating input {
+            display: none; /* Hide radio buttons */
+        }
+
+        .star-rating label {
+            color: #ddd; /* Default star color */
+            margin: 0;
+            display: inline-block; /* Ensure stars are displayed inline */
+        }
+
+        .star-rating input:checked ~ label {
+            color: gold; /* Gold color for selected stars */
+        }
+
+        .star-rating label over,
+        .star-rating label over ~ label {
+            color: gold; /* Gold color for hovered stars */
+        }
+
+        .star-rating .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+            .star-rating .star.selected {
+                color: gold;
+            }
 </style>
 
 <div class="container mt-5">
@@ -35,10 +73,50 @@
         </div>
     </div>
 
+    <div class="mt-5">
+        <h3>Leave a Review</h3>
+        <form id="review-form" method="post">
+            <input type="hidden" name="ProductId" value="@Model.Id" />
+            <input type="hidden" id="rating-value" name="Rating" value="0" />
+            <div class="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="comment">Comment:</label>
+                <textarea id="comment" name="Comment" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+        </form>
+    </div>
+
+    <div id="reviews-section" class="mt-5">
+        <h3>Reviews</h3>
+        <div id="reviews-list">
+            <!-- Reviews will be loaded here via AJAX -->
+        </div>
+    </div>
 </div>
+
 <script>
     $(document).ready(function () {
-        $('.add-to-cart-form').on('submit', function (event) {
+        // Handle star rating click
+        $('.star-rating .star').on('click', function () {
+            var rating = $(this).data('value'); // Get rating value from data attribute
+
+            // Set rating value in the hidden input
+            $('#rating-value').val(rating);
+
+            // Update star colors
+            $('.star-rating .star').each(function () {
+                $(this).toggleClass('selected', $(this).data('value') <= rating);
+            });
+        });
+
+        $('#review-form').on('submit', function (event) {
             event.preventDefault();
 
             var form = $(this);
@@ -46,32 +124,38 @@
 
             $.ajax({
                 type: 'POST',
-                url: form.attr('action'),
+                url: '@Url.Action("AddReview", "UserProduct")',
                 data: formData,
                 success: function (response) {
                     var notification = $('#notification');
-                    if (response.redirectTo) {
-                        // Redirect to login page if provided
-                        window.location.href = response.redirectTo;
+                    if (response.success) {
+                        notification.removeClass('alert-danger').addClass('alert-success');
+                        notification.text(response.message);
+                        // Reload reviews after successful submission
+                        loadReviews();
                     } else {
-                        // Display success or error message
-                        if (response.success) {
-                            notification.removeClass('alert-danger').addClass('alert-success');
-                            notification.text(response.message);
-                        } else {
-                            notification.removeClass('alert-success').addClass('alert-danger');
-                            notification.text(response.message);
-                        }
-                        notification.slideDown().delay(3000).slideUp();
+                        notification.removeClass('alert-success').addClass('alert-danger');
+                        notification.text(response.message);
                     }
+                    notification.slideDown().delay(3000).slideUp();
                 },
                 error: function () {
                     var notification = $('#notification');
                     notification.removeClass('alert-success').addClass('alert-danger');
-                    notification.text('An error occurred while adding the product to the cart.');
+                    notification.text('An error occurred while submitting the review.');
                     notification.slideDown().delay(3000).slideUp();
                 }
             });
         });
+
+        function loadReviews() {
+            var productId = $('input[name="ProductId"]').val();
+            $.get('@Url.Action("ViewReviews", "UserProduct")', { productId: productId }, function (data) {
+                $('#reviews-list').html(data);
+            });
+        }
+
+        // Load reviews on page load
+        loadReviews();
     });
 </script>

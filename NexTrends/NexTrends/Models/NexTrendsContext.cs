@@ -27,15 +27,15 @@ public partial class NexTrendsContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
-    public virtual DbSet<Feedback> Feedbacks { get; set; }
-
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Review> Reviews { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=NEXSUS-DV94\\SQLEXPRESS;Initial Catalog=NexTrends;User Id=sa;Password=ccntspl@123;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("server=NEXSUS-DV94\\SQLEXPRESS;Initial Catalog=Nextrends;User Id=sa;Password=ccntspl@123;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -131,28 +131,13 @@ public partial class NexTrendsContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Address).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.EmailVerificationToken).HasMaxLength(255);
             entity.Property(e => e.Gender).HasMaxLength(10);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.Pincode).HasMaxLength(10);
             entity.Property(e => e.Role).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<Feedback>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__FEEDBACK__3214EC2747587351");
-
-            entity.ToTable("FEEDBACK");
-
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Cid).HasColumnName("CID");
-            entity.Property(e => e.Message).HasMaxLength(500);
-            entity.Property(e => e.Name).HasMaxLength(100);
-
-            entity.HasOne(d => d.CidNavigation).WithMany(p => p.Feedbacks)
-                .HasForeignKey(d => d.Cid)
-                .HasConstraintName("FK__FEEDBACK__CID__4316F928");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -165,9 +150,13 @@ public partial class NexTrendsContext : DbContext
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CartId).HasColumnName("Cart_ID");
             entity.Property(e => e.CouponId).HasColumnName("Coupon_ID");
+            entity.Property(e => e.DeliveryDate).HasColumnType("datetime");
             entity.Property(e => e.ModeOfPayment)
                 .HasMaxLength(50)
                 .HasColumnName("Mode_of_Payment");
+            entity.Property(e => e.OrderDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(50);
 
             entity.HasOne(d => d.Cart).WithMany(p => p.Orders)
@@ -195,6 +184,25 @@ public partial class NexTrendsContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK__PRODUCT__Categor__2B3F6F97");
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Reviews__3214EC0729B53932");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Reviews__Custome__3F115E1A");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Reviews__Product__3E1D39E1");
         });
 
         OnModelCreatingPartial(modelBuilder);

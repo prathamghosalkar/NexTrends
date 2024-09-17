@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Email Verification Notice";
+}
+
+<h2 class="text-center mt-4">Verify Your Email</h2>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4" style="border-radius: 16px;">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Enter OTP</h3>
+                    <p class="text-center text-muted mb-3">We have sent a 4-digit code to your email. Please enter it below to verify your email address.</p>
+                    
+                    <form asp-controller="Account" asp-action="VerifyOTP" method="post">
+                        <div class="d-flex justify-content-center mb-4">
+                            <input type="text" class="form-control otp-input mx-1" id="otp0" name="otp0" maxlength="1" required />
+                            <input type="text" class="form-control otp-input mx-1" id="otp1" name="otp1" maxlength="1" required />
+                            <input type="text" class="form-control otp-input mx-1" id="otp2" name="otp2" maxlength="1" required />
+                            <input type="text" class="form-control otp-input mx-1" id="otp3" name="otp3" maxlength="1" required />
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">Verify OTP</button>
+                    </form>
+
+                    <p class="text-center text-muted mt-4">
+                        Didn't receive the OTP? <a asp-controller="Account" asp-action="ResendOTP" class="text-primary">Resend</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .card {
+        background-color: white;
+        border: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    h2 {
+        color: #333;
+        font-weight: 700;
+    }
+
+    h3 {
+        color: #444;
+        font-weight: 600;
+    }
+
+    .otp-input {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .otp-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 50px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .text-muted {
+        font-size: 14px;
+    }
+
+    .text-primary {
+        color: #007bff;
+        font-weight: 500;
+    }
+
+    .text-primary:hover {
+        text-decoration: underline;
+    }
+
+    
+        .otp-input {
+            width: 50px;
+            height: 50px;
+        }
+
+        .btn-lg {
+            padding: 8px;
+            font-size: 16px;
+        }
+    
+</style>

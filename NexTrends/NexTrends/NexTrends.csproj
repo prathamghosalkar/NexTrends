@@ -8,8 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="8.0.5" />
+    <PackageReference Include="itext.kernel.core" Version="1.0.2" />
+    <PackageReference Include="itext.layout.core" Version="1.0.1" />
+    <PackageReference Include="itext7" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +26,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Stripe.net" Version="45.11.0" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="26.2.14" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
   </ItemGroup>
 
   <ItemGroup>

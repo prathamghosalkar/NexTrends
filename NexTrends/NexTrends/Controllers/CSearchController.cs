@@ -13,28 +13,31 @@ namespace NexTrends.Controllers
         [HttpPost]
         public IActionResult SearchResult(string SearchPr)
         {
+            // Convert search parameter to lowercase for case-insensitive comparison
+            var searchLower = SearchPr?.ToLower();
+
             var result = from p in context.Products
                          join c in context.Categories on p.CategoryId equals c.Id
-                         where p.Name.Contains(SearchPr) ||
-                               p.Name.StartsWith(SearchPr) ||
-                               p.Name.EndsWith(SearchPr) ||
-                               c.Name.Contains(SearchPr) ||
-                               c.Name.StartsWith(SearchPr) ||
-                               c.Name.EndsWith(SearchPr)
-                         select new 
+                         where p.Name.ToLower().Contains(searchLower) ||
+                               c.Name.ToLower().Contains(searchLower)
+                         select new
                          {
-                             Pid=p.Id,
-                             Pname=p.Name,
-                             Pprice=p.Price,
-                             PImage=p.Image
+                             Pid = p.Id,
+                             Pname = p.Name,
+                             Pprice = p.Price,
+                             PImage = p.Image
                          };
-            if (result !=null)
+
+            // Check if any results were found
+            if (result.Any())
             {
                 var resultPR = result.ToList();
                 return View(resultPR);
             }
-            TempData["MSG"] = "No match products found !";
+
+            TempData["MSG"] = "No matching products found!";
             return View();
         }
+
     }
 }

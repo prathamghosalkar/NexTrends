@@ -17,8 +17,10 @@ public partial class Cart
 
     public decimal Price { get; set; }
 
-    public virtual Customer Customer { get; set; } = null!;
+
     public virtual Product Product { get; set; } = null!;
+
+    public virtual Customer Customer { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

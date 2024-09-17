@@ -1,0 +1,19 @@
+﻿@model IEnumerable<dynamic>
+
+<div class="reviews">
+    @if (Model.Any())
+    {
+        foreach (var review in Model)
+        {
+            <div class="review">
+                <strong>@review.CustomerName</strong> - @review.CreatedAt.ToString("MMMM dd, yyyy")<br />
+                Rating: @review.Rating<br />
+                @review.Comment
+            </div>
+        }
+    }
+    else
+    {
+        <p>No reviews yet.</p>
+    }
+</div>

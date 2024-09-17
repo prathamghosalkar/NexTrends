@@ -23,9 +23,13 @@ public partial class Customer
 
     public string Role { get; set; } = null!;
 
+    public string? EmailVerificationToken { get; set; }
+
+    public bool IsEmailVerified { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<CouponUsage> CouponUsages { get; set; } = new List<CouponUsage>();
 
-    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

@@ -17,6 +17,10 @@ public partial class Order
 
     public int? CouponId { get; set; }
 
+    public DateTime? OrderDate { get; set; }
+
+    public DateTime? DeliveryDate { get; set; }
+
     public virtual Cart Cart { get; set; } = null!;
 
     public virtual Coupon? Coupon { get; set; }

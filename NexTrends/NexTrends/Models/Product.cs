@@ -20,4 +20,6 @@ public partial class Product
     public byte[]? Image { get; set; }
 
     public virtual Category Category { get; set; } = null!;
+
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }
