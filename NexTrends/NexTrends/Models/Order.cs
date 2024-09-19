@@ -24,4 +24,6 @@ public partial class Order
     public virtual Cart Cart { get; set; } = null!;
 
     public virtual Coupon? Coupon { get; set; }
+
+    public virtual ICollection<ReturnRequest> ReturnRequests { get; set; } = new List<ReturnRequest>();
 }

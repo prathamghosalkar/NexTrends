@@ -176,7 +176,7 @@ namespace NexTrends.Controllers
                 // After saving the order, generate PDF and send invoice email
                 await SendInvoiceEmail(OrderItems);
 
-                return View("OrderSuccess");
+                return View("ConfirmOrder");
             }
 
             return View("Failure");

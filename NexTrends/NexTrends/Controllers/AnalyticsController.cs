@@ -103,6 +103,31 @@ namespace NexTrends.Controllers
             // Categories for dropdown (filter option)
             var categories = await _context.Categories.ToListAsync();
 
+            // Calculate total orders and total customers
+            int totalOrders = await _context.Orders
+                                            .Where(o => o.OrderDate.HasValue
+                                                    && o.OrderDate.Value.Date >= startDate
+                                                    && o.OrderDate.Value.Date <= endDate)
+                                            .CountAsync();
+
+            int totalCustomers = await _context.Orders
+                                                .Where(o => o.OrderDate.HasValue
+                                                        && o.OrderDate.Value.Date >= startDate
+                                                        && o.OrderDate.Value.Date <= endDate)
+                                                .Select(o => o.Cart.CustomerId)
+                                                .Distinct()
+                                                .CountAsync();
+
+            // Calculate recent total orders by category
+            var recentOrdersByCategory = salesData
+                .GroupBy(s => s.CategoryTitle)
+                .Select(g => new
+                {
+                    CategoryTitle = g.Key,
+                    TotalOrders = g.Count()
+                })
+                .ToList();
+
             // Prepare the ViewModel
             var viewModel = new ChartData
             {
@@ -112,9 +137,13 @@ namespace NexTrends.Controllers
                 EndDate = endDate
             };
 
+            // Set ViewBag properties for total orders and total customers
+            ViewBag.TotalOrders = totalOrders;
+            ViewBag.TotalCustomers = totalCustomers;
+            ViewBag.RecentOrdersByCategory = recentOrdersByCategory;
+
             return View(viewModel);
         }
-
 
         // SplineChartData class to handle day-wise sales data for the spline chart
         public class SplineChartData
@@ -124,4 +153,3 @@ namespace NexTrends.Controllers
         }
     }
 }
-

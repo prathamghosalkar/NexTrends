@@ -5,6 +5,12 @@
 }
 
 <div class="container mt-4">
+    @if (TempData["MSG2"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["MSG2"]
+        </div>
+    }
     <div class="main-body">
         <div class="row gutters-sm">
             <!-- Profile Section -->
@@ -18,6 +24,8 @@
                         <div class="mt-3">
                             <h4>@Model.Customer.Name</h4>
                             <p class="text-secondary">@Model.Customer.Email</p>
+
+
                         </div>
                     </div>
                 </div>
@@ -29,7 +37,7 @@
                         <!-- Profile Details -->
                         <div class="row mb-3">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
+                                <i class="fas fa-envelope" style="font-size: 24px; color: #007bff;"></i>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 @Model.Customer.Email
@@ -38,7 +46,7 @@
                         <hr>
                         <div class="row mb-3">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
+                                <i class="fas fa-phone-alt" style="font-size: 24px; color: #007bff;"></i>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 @Model.Customer.Phone
@@ -47,7 +55,7 @@
                         <hr>
                         <div class="row mb-3">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
+                                <i class="fas fa-map-marker-alt" style="font-size: 24px; color: #007bff;"></i>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 @Model.Customer.Address
@@ -56,7 +64,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Pincode</h6>
+                                <i class="fas fa-map-pin" style="font-size: 24px; color: #007bff;"></i>
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 @Model.Customer.Pincode
@@ -81,10 +89,26 @@
                                     @foreach (var order in Model.Orders)
                                     {
                                         <div class="card mb-2">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Order ID: @order.Id</h5>
-                                                <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
-                                                <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                            <div class="card-body d-flex flex-row align-items-center">
+                                                <!-- Left side with all text details -->
+                                                <div class="order-text" style="flex: 1; padding-right: 20px;">
+                                                    <h5 class="card-title">Order ID: @order.Id</h5>
+                                                    <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
+                                                    <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                                    <p class="card-text"><strong>Product Name:</strong> @order.Cart.Product.Name</p>
+                                                </div>
+
+
+                                                <form asp-controller="UserProduct" asp-action="ProductDetails" method="post">
+                                                    <a href="@Url.Action("ProductDetails", "UserProduct", new { id = order.Cart.ProductId })" class="text-decoration-none">
+                                                        <!-- Image container with background color -->
+                                                        <div style="width: 100%; height: 200px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                                            <img src="@Url.Action("GetImage", "Product", new { id = order.Cart.ProductId })" alt="Product Image" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                                        </div>
+                                                    </a>
+                                                </form>
+                                                <!-- Right side with the image, clickable link -->
+
                                             </div>
                                         </div>
                                     }
@@ -141,10 +165,39 @@
                                     @foreach (var order in Model.PastOrders)
                                     {
                                         <div class="card mb-2">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Order ID: @order.Id</h5>
-                                                <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
-                                                <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                            <div class="card-body d-flex flex-row align-items-center">
+                                                <!-- Left side with all text details -->
+                                                <div class="order-text" style="flex: 1; padding-right: 20px;">
+                                                    <h5 class="card-title">Order ID: @order.Id</h5>
+                                                    <p class="card-text"><strong>Amount:</strong> @order.Amount</p>
+                                                    <p class="card-text"><strong>Status:</strong> @order.Status</p>
+                                                    <p class="card-text"><strong>Product Name:</strong> @order.Cart.Product.Name</p>
+                                                    @{
+                                                        var Today = DateTime.Now.Date;
+                                                        var deliveryDate = order.DeliveryDate.HasValue ? order.DeliveryDate.Value.Date : (DateTime?)null;
+                                                        var differenceInDays = deliveryDate.HasValue ? (Today - deliveryDate.Value).Days : 0;
+
+                                                        bool IsReturnAllow = false;
+                                                        if (differenceInDays <= 10)
+                                                        {
+                                                            IsReturnAllow = true;
+                                                        }
+
+                                                    }
+                                                    @if (IsReturnAllow) // Model contains the boolean IsReturnAllow
+                                                    {
+                                                        <a href="@Url.Action("ReturnOrder", "Return", new { orderId = order.Id })" class="btn btn-primary mt-auto">Return</a>
+                                                    }
+                                                </div>
+
+
+                                                <!-- Right side with the image -->
+                                                <a href="@Url.Action("ProductDetails", "UserProduct", new { id = order.Cart.ProductId })" class="text-decoration-none">
+                                                    <!-- Image container with background color -->
+                                                    <div style="width: 100%; height: 200px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                                        <img src="@Url.Action("GetImage", "Product", new { id = order.Cart.ProductId })" alt="Product Image" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
                                     }
@@ -160,16 +213,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Include Bootstrap 5 JS bundle (does not include Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <!-- Custom CSS for better alignment -->
+    <style>
+        .profile-image-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-text {
+            text-align: left;
+        }
+
+        .order-image {
+            text-align: right;
+        }
+
+        .coupon-text {
+            text-align: left;
+        }
+
+        .coupon-image {
+            text-align: right;
+        }
+    </style>
 </div>
-
-<!-- Include Bootstrap 5 JS bundle (does not include Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-
-<!-- Custom CSS for better alignment -->
-<style>
-    .profile-image-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
-    }
-</style>

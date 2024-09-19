@@ -1,0 +1,158 @@
+﻿@model NexTrends.Models.ReturnProductViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-2">
+    <div class="main-body" style="margin-top: 150px; margin-bottom:15px;">
+        <div class="card">
+            <div class="card-body">
+
+                <h4>Return Request for @Model.ProductName</h4>
+                <form asp-controller="Return" asp-action="SubmitReturnRequest" method="post">
+                    <!-- Hidden input to bind ProductId -->
+                    <input type="hidden" name="OrderId" value="@Model.Order?.Id" />
+
+                
+
+                    <!-- Product Image -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Product Image:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            @if (Model.ProductId != 0)
+                            {
+                                <img src="@Url.Action("GetImage", "Product", new { id = Model.ProductId })" alt="@Model.ProductName" class="img-fluid" style="max-width: 200px;" />
+                            }
+                            else
+                            {
+                                <p>Image not available</p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Product Name -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Product Name:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            @if (!string.IsNullOrEmpty(Model.ProductName))
+                            {
+                                @Model.ProductName
+                            }
+                            else
+                            {
+                                <p>Product name not available</p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Order ID -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Order ID:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            @Model.Order.Id
+                        </div>
+                    </div>
+
+                    <!-- Quantity to Return -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Quantity to Return:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="number" name="QuantityToReturn" class="form-control" min="1" max="@Model.Product_Q" value="1" />
+                            <div id="quantityError" class="text-danger"></div>
+                        </div>
+                    </div>
+
+                    <!-- Total Amount -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Total Amount:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="number" asp-for="TotalAmount" name="TotalAmount" class="form-control" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Reason for Return -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Reason for Return:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <select name="Reasons" class="form-select">
+                                <option value="">Select a reason</option>
+                                <option value="Defective">Defective</option>
+                                <option value="Wrong Item">Wrong Item</option>
+                                <option value="Not as Described">Not as Described</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Additional Details:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            <textarea name="AdditionalD" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row mb-3">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9">
+                            <input type="submit" class="btn btn-primary" value="Submit Return Request" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityInput = document.querySelector('input[name="QuantityToReturn"]');
+        const pricePerUnit = parseFloat('@Model.PricePerUnit'); // Retrieve the price per unit from the model
+        const maxQuantity = parseInt('@Model.Product_Q'); // Get max quantity from the model
+        const totalAmountInput = document.querySelector('input[name="TotalAmount"]');
+        const quantityError = document.getElementById('quantityError');
+
+        // Initialize the total amount on page load
+        updateTotalAmount();
+
+        // Handle input event when the quantity is changed
+        quantityInput.addEventListener('input', function () {
+            const quantityToReturn = parseInt(quantityInput.value);
+
+            // Validate if the input quantity exceeds the maximum allowed quantity
+            if (quantityToReturn > maxQuantity) {
+                quantityError.textContent = `Quantity cannot exceed ${maxQuantity}.`;
+                quantityInput.value = maxQuantity;
+            } else {
+                quantityError.textContent = '';
+            }
+
+            // Update the total amount on quantity change
+            updateTotalAmount();
+        });
+
+        // Function to update the total amount based on quantity and price per unit
+        function updateTotalAmount() {
+            const quantityToReturn = parseInt(quantityInput.value) || 0; // Safeguard against NaN values
+            const totalAmount = quantityToReturn * pricePerUnit;
+            totalAmountInput.value = totalAmount.toFixed(2); // Update the total amount with 2 decimal precision
+        }
+    });
+</script>

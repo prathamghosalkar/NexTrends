@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<NexTrends.Models.Order>
 @{
     Layout = "_LayoutAdmin";
+    var returnRequests = ViewData["ReturnRequest"] as IEnumerable<NexTrends.Models.ReturnRequest> ?? Enumerable.Empty<NexTrends.Models.ReturnRequest>();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -9,66 +10,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+    <style>
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Order Management</h1>
-        @if (TempData["Message"] != null)
-        {
-            <div class="alert alert-info">
-                @TempData["Message"]
-            </div>
-        }
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Cart ID</th>
-                        <th>Status</th>
-                        <th>Amount</th>
-                        <th>Mode of Payment</th>
-                        <th>Customer Name</th>
-                        <th>Customer Phone</th>
-                        <th>Customer Email</th>
-                        <th>Customer Address</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var order in Model)
-                    {
+        <div class="mb-4">
+            <button class="btn btn-primary" onclick="showSection('orders')">Orders</button>
+            <button class="btn btn-secondary" onclick="showSection('returnRequest')">Return Request</button>
+        </div>
+
+        <div id="ordersSection" class="section active">
+            <h2 class="mb-4">Orders</h2>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info">
+                    @TempData["Message"]
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <td>@order.Id</td>
-                            <td>@order.CartId</td>
-                            <td>@order.Status</td>
-                            <td>@order.Amount.ToString("")</td>
-                            <td>@order.ModeOfPayment</td>
-                            <td>@order.Cart.Customer.Name</td>
-                            <td>@order.Cart.Customer.Phone</td>
-                            <td>@order.Cart.Customer.Email</td>
-                            <td>@order.Cart.Customer.Address</td>
-                            <td>
-                                @if (order.Status == "Pending")
-                                {
-                                    <form method="post" action="/Orders/Deliver" class="d-inline">
-                                        <input type="hidden" name="id" value="@order.Id" />
-                                        <button type="submit" class="btn btn-success btn-sm">Mark as Delivered</button>
-                                    </form>
-                                }
-                            </td>
+                            <th>Order ID</th>
+                            <th>Cart ID</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Mode of Payment</th>
+                            <th>Customer Name</th>
+                            <th>Customer Phone</th>
+                            <th>Customer Email</th>
+                            <th>Customer Address</th>
+                            <th>Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.CartId</td>
+                                <td>@order.Status</td>
+                                <td>@order.Amount.ToString("C")</td>
+                                <td>@order.ModeOfPayment</td>
+                                <td>@order.Cart.Customer.Name</td>
+                                <td>@order.Cart.Customer.Phone</td>
+                                <td>@order.Cart.Customer.Email</td>
+                                <td>@order.Cart.Customer.Address</td>
+                                <td>
+                                    @if (order.Status == "Pending")
+                                    {
+                                        <form method="post" action="/Orders/Deliver" class="d-inline">
+                                            <input type="hidden" name="id" value="@order.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Mark as Delivered</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="returnRequestSection" class="section">
+            <h2 class="mb-4">Return Requests</h2>
+            @if (returnRequests.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Order ID</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                                <th>Return Reason</th>
+                                <th>Additional Details</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in returnRequests)
+                            {
+                                <tr>
+                                    <td>@request.ReturnRequestId</td>
+                                    <td>@request.OrderId</td>
+                                    <td>@request.Order.Cart.Product.Name</td>
+                                    <td>@request.Quantity</td>
+                                    <td>@request.TotalAmount.ToString("C")</td>
+                                    <td>@request.ReturnReason</td>
+                                    <td>@request.AdditionalDetails</td>
+                                    <td>@request.RequestDate</td>
+                                    <td>@request.Status</td>
+                                    <td>
+                                        @if (request.Status == "Pending")
+                                        {
+                                            <form method="post" action="/Orders/ApproveReturnRequest" class="d-inline">
+                                                <input type="hidden" name="Id" value="@request.ReturnRequestId" />
+                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p>No return requests found.</p>
+            }
         </div>
     </div>
 
     <!-- jQuery and Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSection(sectionId) {
+            document.getElementById('ordersSection').classList.remove('active');
+            document.getElementById('returnRequestSection').classList.remove('active');
+
+            document.getElementById(sectionId + 'Section').classList.add('active');
+        }
+    </script>
 </body>
 </html>

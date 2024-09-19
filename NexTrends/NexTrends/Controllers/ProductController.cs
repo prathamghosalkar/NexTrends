@@ -21,15 +21,23 @@ namespace NexTrends.Controllers
             return View(cat);
         }
 
-        public IActionResult AddProduct(string Name, decimal Price, string Desc, int Qunatity, int Cid, IFormFile Image)
+        public IActionResult AddProduct(string Name, decimal Price, string Desc, int Quantity, int Cid, IFormFile Image)
         {
+            // Check if the quantity is greater than 0
+            if (Quantity <= 0)
+            {
+                TempData["ErrorMessage"] = "Product quantity must be greater than 0.";
+                return RedirectToAction("Category", "Category");
+            }
+
             Product pr = new Product();
             var context = new NexTrendsContext();
             pr.Name = Name;
             pr.Price = Price;
             pr.Description = Desc;
-            pr.Quantity = Qunatity;
+            pr.Quantity = Quantity;
             pr.CategoryId = Cid;
+
             if (Image != null && Image.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -38,15 +46,21 @@ namespace NexTrends.Controllers
                     pr.Image = memoryStream.ToArray();
                 }
             }
+
             context.Products.Add(pr);
             var re = context.SaveChanges();
+
             if (re > 0)
             {
                 TempData["SuccessMessage"] = "Product added successfully!";
                 return RedirectToAction("Category", "Category");
             }
+
+            // In case saving to the database fails for other reasons
+            TempData["ErrorMessage"] = "Failed to add the product. Please try again.";
             return RedirectToAction("Category", "Category");
         }
+
 
         public IActionResult ProductsList(int id, string SerchPr = "")
         {

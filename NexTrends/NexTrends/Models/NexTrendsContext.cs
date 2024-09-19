@@ -31,6 +31,8 @@ public partial class NexTrendsContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ReturnRequest> ReturnRequests { get; set; }
+
     public virtual DbSet<Review> Reviews { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -184,6 +186,20 @@ public partial class NexTrendsContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK__PRODUCT__Categor__2B3F6F97");
+        });
+
+        modelBuilder.Entity<ReturnRequest>(entity =>
+        {
+            entity.HasKey(e => e.ReturnRequestId).HasName("PK__ReturnRe__0CCD2599B06E774C");
+
+            entity.Property(e => e.RequestDate).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.ReturnRequests)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReturnRequests_Orders");
         });
 
         modelBuilder.Entity<Review>(entity =>

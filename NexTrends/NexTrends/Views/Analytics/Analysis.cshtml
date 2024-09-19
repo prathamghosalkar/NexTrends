@@ -12,29 +12,32 @@
     <div class="row mb-4">
         <div class="col-md-3">
             <label for="startDate" class="form-label">Start Date</label>
-            <input type="date" class="form-control" id="startDate" name="startDate"
-                   value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+            <ejs-datepicker id="startDate" name="startDate" placeholder="Select Start Date"
+                            value="@Model.StartDate"
+                            format="yyyy-MM-dd">
+            </ejs-datepicker>
         </div>
         <div class="col-md-3">
             <label for="endDate" class="form-label">End Date</label>
-            <input type="date" class="form-control" id="endDate" name="endDate"
-                   value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+            <ejs-datepicker id="endDate" name="endDate" placeholder="Select End Date"
+                            value="@Model.EndDate"
+                            format="yyyy-MM-dd">
+            </ejs-datepicker>
         </div>
         <div class="col-md-3">
             <label class="form-label">Categories</label>
-            <div id="categories">
-                @foreach (var category in Model.Categories)
-                {
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="category_@category.Id" name="categoryIds" value="@category.Id"
-                        @(Model.SelectedCategoryIds.Contains(category.Id) ? "checked" : "") />
-                        <label class="form-check-label" for="category_@category.Id">@category.Name</label>
-                    </div>
-                }
-            </div>
+            <ejs-multiselect id="categoriesDropdown" name="categoryIds" placeholder="Select Categories"
+                             dataSource="@Model.Categories"
+                             fields="@(new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "Name", Value = "Id" })"
+                             value="@Model.SelectedCategoryIds">
+            </ejs-multiselect>
         </div>
-        <div class="col-md-3 align-self-end">
-            <button type="submit" class="btn btn-primary">Filter</button>
+        <div class="col-md-3 d-flex align-items-end">
+            <ejs-button id="filterButton" cssClass="e-primary" type="submit">
+                <e-content-template>
+                    Filter
+                </e-content-template>
+            </ejs-button>
         </div>
     </div>
 }
@@ -42,15 +45,42 @@
 @* Summary Widgets *@
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="d-flex flex-row widget summary sales">
-            <div class="d-flex flex-column justify-content-center p-5">
-                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
-            </div>
-            <div class="d-flex flex-column m-auto py-3">
-                <span class="lead">Total Sales</span>
+        <ejs-card id="total-income-card" cssClass="e-card summary-card">
+            <e-card-header>
+                <div class="e-card-header-text">
+                    <span class="lead">Total Income</span>
+                </div>
+            </e-card-header>
+            <e-card-content>
                 <h1 class="display-6 fw-bold">@ViewBag.TotalSales</h1>
-            </div>
-        </div>
+            </e-card-content>
+        </ejs-card>
+    </div>
+
+    <div class="col-md-4">
+        <ejs-card id="total-orders-card" cssClass="e-card summary-card">
+            <e-card-header>
+                <div class="e-card-header-text">
+                    <span class="lead">Total Orders</span>
+                </div>
+            </e-card-header>
+            <e-card-content>
+                <h1 class="display-6 fw-bold">@ViewBag.TotalOrders</h1>
+            </e-card-content>
+        </ejs-card>
+    </div>
+
+    <div class="col-md-4">
+        <ejs-card id="total-customers-card" cssClass="e-card summary-card">
+            <e-card-header>
+                <div class="e-card-header-text">
+                    <span class="lead">Total Customers</span>
+                </div>
+            </e-card-header>
+            <e-card-content>
+                <h1 class="display-6 fw-bold">@ViewBag.TotalCustomers</h1>
+            </e-card-content>
+        </ejs-card>
     </div>
 </div>
 
@@ -110,29 +140,20 @@
     </div>
 </div>
 
-@* Recent Sales *@
-<div class="row">
+@* Recent Orders Grid *@
+<div class="row mb-6">
     <div class="col-md-6">
         <div class="widget">
             <div class="p-4">
-                <h5 class="fw-bold">Recent Sales</h5>
+                <h5 class="fw-bold">Recent Orders by Category</h5>
             </div>
             <div class="px-4 pb-4">
-                <ejs-grid id="recent-sales"
-                          dataSource="@ViewBag.RecentTransactions" gridLines="None">
+                <ejs-grid id="recent-orders-by-category" dataSource="@ViewBag.RecentOrdersByCategory" gridLines="None">
                     <e-grid-columns>
-                        <e-grid-column headerText="Category" field="CategoryTitleWithIcon"></e-grid-column>
-                        <e-grid-column headerText="Date" field="Date" type="date" format="MMM-dd-yy"></e-grid-column>
-                        <e-grid-column headerText="Amount" field="FormattedAmount" textAlign="Right"></e-grid-column>
+                        <e-grid-column headerText="Category" field="CategoryTitle"></e-grid-column>
+                        <e-grid-column headerText="Total Orders" field="TotalOrders" textAlign="Right"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="widget h-100">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <span><i class="fa-solid fa-plus fa-2xl"></i> Widget</span>
             </div>
         </div>
     </div>
